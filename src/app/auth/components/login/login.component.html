@@ -1,0 +1,123 @@
+<div class="auth-screen">
+
+  <!-- Brand side -->
+  <div class="auth-showcase">
+    <div class="auth-showcase-inner">
+      <div class="auth-brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M3 7l9 5 9-5M12 12v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="auth-brand-text">WorldBank<strong>IFC</strong></span>
+      </div>
+
+      <h2 class="auth-showcase-title">Fund Donation<br>Management Portal</h2>
+      <p class="auth-showcase-text">
+        A secure workspace for managing customer profiles, donations,
+        transactions, and account services — all in one place.
+      </p>
+
+      <ul class="auth-feature-list">
+        <li><i class="bi bi-shield-check"></i> Bank-grade account security</li>
+        <li><i class="bi bi-people"></i> Centralized customer records</li>
+        <li><i class="bi bi-graph-up-arrow"></i> Real-time account status</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Form side -->
+  <div class="auth-form-side">
+    <div class="auth-form-wrap">
+
+      <div class="auth-form-header">
+        <div class="auth-icon">
+          <i class="bi bi-shield-lock"></i>
+        </div>
+        <h1 class="auth-title">Welcome back</h1>
+        <p class="auth-subtitle">Sign in with your registered phone number and PIN to continue.</p>
+      </div>
+
+      @if (errorMessage) {
+        <div class="alert alert-danger d-flex align-items-center gap-2 mb-4">
+          <i class="bi bi-exclamation-circle"></i>
+          <span>{{ errorMessage }}</span>
+        </div>
+      }
+
+      <form (ngSubmit)="login()" class="auth-form">
+
+        <div class="row g-3">
+          <div class="col-4">
+            <label class="form-label">Country Code</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="countryCode"
+              name="countryCode"
+              readonly>
+          </div>
+
+          <div class="col-8">
+            <label class="form-label">Phone Number</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="phoneNumber"
+              name="phoneNumber"
+              placeholder="e.g. 12345678"
+              autocomplete="tel"
+              required>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">User Type</label>
+          <select
+            class="form-select"
+            [(ngModel)]="userType"
+            name="userType"
+            required>
+            <option value="MEMBER">MEMBER</option>
+            <option value="TEAMLEADER">TEAMLEADER</option>
+            <option value="EMPLOYEE">EMPLOYEE</option>
+            <option value="ADMIN">ADMIN</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">PIN</label>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="pin"
+            name="pin"
+            placeholder="••••"
+            maxlength="4"
+            autocomplete="current-password"
+            required>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-primary w-100 py-2 mt-1 auth-submit"
+          [disabled]="isLoading">
+          @if (isLoading) {
+            <span class="spinner-sm" aria-hidden="true"></span>
+            <span>Signing in…</span>
+          } @else {
+            <span>Sign In</span>
+            <i class="bi bi-arrow-right"></i>
+          }
+        </button>
+
+        <p class="auth-footnote">
+          Protected access · Contact your administrator if you need help signing in.
+        </p>
+      </form>
+
+    </div>
+  </div>
+
+</div>

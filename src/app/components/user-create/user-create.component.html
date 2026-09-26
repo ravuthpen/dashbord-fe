@@ -1,0 +1,11 @@
+<div class="page-header">
+  <div>
+    <h2 class="md-0">Create User</h2>
+    <p class="page-subtitle">Register a new customer account and profile.</p>
+  </div>
+</div>
+
+<app-user-form
+  [mode]="'create'"
+  (create)="onCreate($event)">
+</app-user-form>

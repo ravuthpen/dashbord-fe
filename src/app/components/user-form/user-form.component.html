@@ -1,0 +1,357 @@
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <!-- Identity / Audit -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <i class="bi bi-fingerprint"></i>
+      <h6>Identity</h6>
+    </div>
+    <div class="section-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-4">
+          <label class="form-label">ID</label>
+          <input class="form-control" formControlName="id" readonly>
+        </div>
+        <div class="col-12 col-md-4">
+          <label class="form-label">Profile ID</label>
+          <input class="form-control"
+          formControlName="profileId"
+          placeholder="Profile id"
+          [ngClass]="{ 'is-invalid': isInvalid('profileId') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('profileId')) {
+              Profile ID is required.
+            }
+          </div>
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Status</label>
+          <input class="form-control"
+          formControlName="userStatus"
+          placeholder="Status"
+          [ngClass]="{ 'is-invalid': isInvalid('userStatus') }">
+        </div>
+        <div class="col-6 col-md-2">
+          <label class="form-label">Age</label>
+          <input class="form-control"
+          formControlName="age"
+          placeholder="Age"
+          [ngClass]="{ 'is-invalid': isInvalid('age') }">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Personal details -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <i class="bi bi-person-vcard"></i>
+      <h6>Personal Details</h6>
+    </div>
+    <div class="section-card-body">
+      <div class="row g-3">
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">First Name <span class="text-danger">*</span></label>
+          <input class="form-control"
+          formControlName="firstName"
+          placeholder="First name"
+          [ngClass]="{ 'is-invalid': isInvalid('firstName') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('firstName')) {
+              First Name is required.
+            }
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Last Name <span class="text-danger">*</span></label>
+          <input class="form-control"
+          formControlName="lastName"
+          placeholder="Last name"
+          [ngClass]="{ 'is-invalid': isInvalid('lastName') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('lastName')) {
+              Last Name is required.
+            }
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">National ID <span class="text-danger">*</span></label>
+          <input class="form-control"
+          formControlName="nationalityNumber"
+          placeholder="National ID"
+          [ngClass]="{ 'is-invalid': isInvalid('nationalityNumber') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('nationalityNumber')) {
+              National ID is required.
+            }
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Passport Number</label>
+          <input class="form-control"
+          formControlName="passportNumber"
+          placeholder="Passport number"
+          [ngClass]="{ 'is-invalid': isInvalid('passportNumber') }">
+        </div>
+
+        <div class="col-12 col-md-6">
+          <label class="form-label">Email</label>
+          <input class="form-control"
+          formControlName="email"
+          placeholder="name@example.com"
+          [ngClass]="{ 'is-invalid': isInvalid('email') }">
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Date of Birth <span class="text-danger">*</span></label>
+          <input class="form-control"
+          id="dateOfBirth"
+          type="date"
+          formControlName="dateOfBirth"
+          [ngClass]="{ 'is-invalid': isInvalid('dateOfBirth') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('dateOfBirth')) {
+              Date of Birth is required.
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Account -->
+  <div class="section-card">
+    <div class="section-card-header">
+      <i class="bi bi-telephone"></i>
+      <h6>Account &amp; Contact</h6>
+    </div>
+    <div class="section-card-body">
+      <div class="row g-3">
+        <div class="col-12 col-md-6">
+          <label class="form-label">Country Code <span class="text-danger">*</span></label>
+          <input class="form-control"
+          formControlName="countryCode"
+          placeholder="Country code"
+          [ngClass]="{ 'is-invalid': isInvalid('countryCode') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('countryCode')) {
+              Country Code is required.
+            }
+          </div>
+        </div>
+        <div class="col-12 col-md-6">
+          <label class="form-label">Phone Number <span class="text-danger">*</span></label>
+          <input class="form-control"
+          formControlName="phoneNumber"
+          placeholder="Phone number"
+          [ngClass]="{ 'is-invalid': isInvalid('phoneNumber') }">
+          <div class="invalid-feedback">
+            @if (isInvalid('phoneNumber')) {
+              Phone Number is required.
+            }
+          </div>
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label">Gender <span class="text-danger">*</span></label>
+          <select class="form-select" formControlName="gender">
+            @if (isInvalid('gender')) {
+              <option value="" disabled selected>-- Select --</option>
+            } @else {
+              <option value="">-- Select --</option>
+            }
+            @for (g of gender; track g) {
+              <option [value]="g">{{ g }}</option>
+            }
+          </select>
+        </div>
+        <div class="col-6 col-md-4">
+          <label class="form-label">Team <span class="text-danger">*</span></label>
+          <select class="form-select" formControlName="referralCode">
+            @if (isInvalid('referralCode')) {
+              <option value="" disabled selected>-- Select --</option>
+            } @else {
+              <option value="">-- Select --</option>
+            }
+            @for (r of referralCodes; track r) {
+              <option [value]="r">{{ r }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="col-6 col-md-4">
+          <label class="form-label">User Type <span class="text-danger">*</span></label>
+          <select class="form-select" formControlName="userType">
+            @if (isInvalid('userType')) {
+              <option value="" disabled selected>-- Select --</option>
+            } @else {
+              <option value="">-- Select --</option>
+            }
+            @for (ut of userTypes; track ut) {
+              <option [value]="ut">{{ ut }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Address -->
+  <div class="section-card" formGroupName="address">
+    <div class="section-card-header">
+      <i class="bi bi-geo-alt"></i>
+      <h6>Address</h6>
+    </div>
+    <div class="section-card-body">
+      <label class="form-label">Address Line <span class="text-danger">*</span></label>
+      <div class="row g-3">
+        <div class="col-12">
+          <input
+            class="form-control"
+            formControlName="line1"
+            placeholder="Street, building, etc."
+            [ngClass]="{ 'is-invalid': isInvalid('line1') }">
+        </div>
+
+        <!-- Province -->
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="form-label">Province <span class="text-danger">*</span></label>
+          <select class="form-select"
+                  formControlName="provinceCode">
+            @if (isInvalid('provinceCode')) {
+              <option value="" disabled selected>-- Select --</option>
+            } @else {
+              <option value="">-- Province --</option>
+            }
+            @for (p of provinces; track p.code) {
+              <option [value]="p.code">{{ p.nameEn }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- District -->
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="form-label">District <span class="text-danger">*</span></label>
+          <select class="form-select"
+                  formControlName="districtCode">
+            <option value="">-- District --</option>
+            @for (d of districts; track d.code) {
+              <option [value]="d.code">{{ d.nameEn }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Commune -->
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="form-label">Commune <span class="text-danger">*</span></label>
+          <select class="form-select"
+                  formControlName="communeCode">
+            <option value="">-- Commune --</option>
+            @for (c of communes; track c.code) {
+              <option [value]="c.code">{{ c.nameEn }}</option>
+            }
+          </select>
+        </div>
+
+        <!-- Village -->
+        <div class="col-12 col-sm-6 col-lg-3">
+          <label class="form-label">Village <span class="text-danger">*</span></label>
+          <select class="form-select" formControlName="villageCode">
+            <option value="">-- Village --</option>
+            @for (v of villages; track v.code) {
+              <option [value]="v.code">{{ v.nameEn }}</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="filter-section">
+      <label class="form-label">Photos</label>
+      <!-- PhotoURl start-->
+            @if (!UserId) {
+        <div class="alert alert-info py-2">
+          Create the room first, then you can upload photos.
+        </div>
+      }
+
+      <div class="d-flex gap-2 align-items-center flex-wrap">
+        <input
+          type="file"
+          class="form-control"
+          accept="image/jpeg,image/png,image/webp"
+          multiple
+          (change)="onFilesSelected($event)"
+          [disabled]="!UserId || uploading"
+        />
+
+        <button
+          type="button"
+          class="btn btn-outline-primary"
+          (click)="uploadSelected()"
+          [disabled]="!UserId || uploading || selectedFiles.length === 0">
+          @if (uploading) { Uploading... } @else { Upload Selected }
+        </button>
+      </div>
+
+      @if (uploadError) {
+        <div class="text-danger mt-2">{{ uploadError }}</div>
+      }
+
+      @if (selectedPreviews.length > 0) {
+        <div class="mt-3">
+          <div class="small text-muted mb-2">Selected (preview)</div>
+          <div class="d-flex flex-wrap gap-2">
+            @for (p of selectedPreviews; track p) {
+              <div class="border rounded p-1">
+                <img [src]="p" style="width: 110px; height: 80px; object-fit: cover;" />
+              </div>
+            }
+          </div>
+        </div>
+      }
+
+      @if (photoUrlsView.length > 0) {
+        <div class="mt-3">
+          <div class="small text-muted mb-2">Uploaded photos</div>
+          <div class="d-flex flex-wrap gap-2">
+            @for (u of photoUrlsView; track u) {
+              <div class="border rounded p-1 position-relative">
+                <img [src]="u" style="width: 140px; height: 100px; object-fit: cover;" />
+
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger position-absolute"
+                  style="top: 6px; right: 6px;"
+                  (click)="deletePhotoByUrl(u)"
+                  [disabled]="uploading">
+                  ✕
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+  <!-- PhotoURl end-->
+  </div>
+
+  <!-- Actions -->
+  <div class="form-actions-bar">
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="goBack()">
+      <i class="bi bi-arrow-left me-1"></i> Back
+    </button>
+
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="form.invalid">
+      <i class="bi bi-check2 me-1"></i>
+      {{ mode() === 'create' ? 'Create User' : 'Save Changes' }}
+    </button>
+  </div>
+
+</form>

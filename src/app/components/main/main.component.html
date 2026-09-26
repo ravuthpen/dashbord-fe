@@ -1,0 +1,110 @@
+@if (isLoginPage) {
+
+  <!-- Full-screen auth layout, no chrome -->
+  <router-outlet></router-outlet>
+
+} @else {
+
+  <div class="admin-shell" [class.sidebar-open]="sidebarOpen()">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+            <path d="M3 7l9 5 9-5M12 12v10" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <span class="brand-text">Fund<strong>Donation</strong></span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="sidebar-section-label">Menu</span>
+        @for (item of navItems; track item.path) {
+          <a
+            class="sidebar-link"
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }">
+            <i class="bi {{ item.icon }}"></i>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+      </nav>
+
+      <div class="sidebar-footer">
+        @for (item of bottomNavItems; track item.path) {
+          <a
+            class="sidebar-link"
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: false }">
+            <i class="bi {{ item.icon }}"></i>
+            <span>{{ item.label }}</span>
+          </a>
+        }
+        <button type="button" class="sidebar-link sidebar-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-left"></i>
+          <span>Log out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Backdrop for mobile -->
+    <div class="sidebar-backdrop" (click)="toggleSidebar()"></div>
+
+    <!-- Main column -->
+    <div class="admin-main">
+
+      <!-- Topbar -->
+      <header class="admin-topbar">
+        <div class="topbar-left">
+          <button type="button" class="icon-btn d-lg-none" (click)="toggleSidebar()" aria-label="Toggle menu">
+            <i class="bi bi-list"></i>
+          </button>
+          <div>
+            <div class="topbar-eyebrow">Admin Dashboard</div>
+            <h1 class="topbar-title">{{ currentPageLabel }}</h1>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <button type="button" class="icon-btn" aria-label="Notifications">
+            <i class="bi bi-bell"></i>
+          </button>
+
+          <div class="user-menu">
+            <button type="button" class="user-chip" (click)="toggleUserMenu()">
+              @if (accountService.profile()?.profile?.photo_object_key?.at(-1); as objectKey) {
+                <img [src]="getProfileImageUrl(objectKey)" class="user-avatar-img" alt="Avatar">
+              } @else {
+                <span class="user-avatar">{{ userInitials }}</span>
+              }
+              <span class="user-name d-none d-sm-inline">{{ accountService.profile()?.profile?.firstName }} {{ accountService.profile()?.profile?.lastName }}</span>
+              <i class="bi bi-chevron-down small"></i>
+            </button>
+
+            @if (userMenuOpen()) {
+              <div class="user-dropdown">
+                <a class="user-dropdown-item user-dropdown-item-default" routerLink="/settings" (click)="toggleUserMenu()">
+                  <i class="bi bi-gear"></i>Settings
+                </a>
+                <button type="button" class="user-dropdown-item" (click)="logout()">
+                  <i class="bi bi-box-arrow-left"></i> Log out
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      </header>
+
+      <!-- Page content -->
+      <main class="admin-content">
+        <router-outlet></router-outlet>
+      </main>
+
+      <app-footer></app-footer>
+    </div>
+  </div>
+}

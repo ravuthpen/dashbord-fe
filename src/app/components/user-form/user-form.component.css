@@ -1,0 +1,13 @@
+input[type="date"] {
+  cursor: pointer;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+input[type="date"]:focus {
+  box-shadow: none;
+}
+

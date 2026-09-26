@@ -1,0 +1,22 @@
+<div class="page-header">
+  <div>
+    <h2 class="md-0">User Profile Update</h2>
+    <p class="page-subtitle">Edit account, personal, and address information.</p>
+  </div>
+</div>
+
+@if (customerProfile()) {
+  <app-user-form
+    [mode]="'update'"
+    [value]="customerProfile()"
+    (update)="onUpdate($event)">
+  </app-user-form>
+} @else {
+  <div class="section-card">
+    <div class="section-card-body">
+      <div class="skeleton mb-3" style="width:100%;height:38px"></div>
+      <div class="skeleton mb-3" style="width:100%;height:38px"></div>
+      <div class="skeleton" style="width:60%;height:38px"></div>
+    </div>
+  </div>
+}

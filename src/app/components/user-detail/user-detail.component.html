@@ -1,0 +1,183 @@
+<div class="page-header">
+  <div>
+    <h2 class="md-0">User Account Detail</h2>
+    <p class="page-subtitle">Full profile, contact and address information.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-secondary" (click)="goBack()">
+      <i class="bi bi-arrow-left me-1"></i> Back
+    </button>
+    <button class="btn btn-primary" (click)="edit()">
+      <i class="bi bi-pencil me-1"></i> Edit
+    </button>
+  </div>
+</div>
+
+@if (loading()) {
+  <div class="section-card">
+    <div class="section-card-body">
+      <div class="d-flex align-items-center gap-3 mb-4">
+        <div class="skeleton" style="width:64px;height:64px;border-radius:50%"></div>
+        <div>
+          <div class="skeleton mb-2" style="width:180px;height:16px"></div>
+          <div class="skeleton" style="width:120px;height:12px"></div>
+        </div>
+      </div>
+      <div class="row g-3">
+        @for (row of skeletonRows; track $index) {
+          <div class="col-12 col-md-6">
+            <div class="skeleton" style="width:100%;height:14px"></div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  @if (error()) {
+    <div class="alert alert-danger d-flex align-items-center gap-2">
+      <i class="bi bi-exclamation-triangle"></i> {{ error() }}
+    </div>
+  } @else {
+    @if (customerProfile(); as cp) {
+
+      <!-- Profile summary -->
+      <div class="section-card">
+        <div class="section-card-body">
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            @if (cp.profile.photo_object_key?.at(-1); as objectKey) {
+              <img
+                [src]="getProfileImageUrl(objectKey)"
+                class="profile-avatar-lg profile-avatar-img"
+                alt="Profile photo"
+                (error)="onImageError($event)">
+            } @else {
+              <span class="profile-avatar-lg profile-avatar-fallback">
+                {{ cp.profile.firstName?.[0] ?? '?' }}{{ cp.profile.lastName?.[0] ?? '' }}
+              </span>
+            }
+            <div class="flex-grow-1">
+              <h4 class="mb-1">{{ cp.profile.firstName }} {{ cp.profile.lastName }}</h4>
+              <div class="text-muted small">User ID: {{ cp.account.userAccountId }}</div>
+            </div>
+            <span class="badge-status"
+              [class.badge-active]="cp.account.userStatus === 'ACTIVE'"
+              [class.badge-pending]="cp.account.userStatus === 'PENDING'"
+              [class.badge-disabled]="cp.account.userStatus === 'DISABLED'"
+              [class.badge-default]="!cp.account.userStatus || (cp.account.userStatus !== 'ACTIVE' && cp.account.userStatus !== 'PENDING' && cp.account.userStatus !== 'DISABLED')">
+              {{ cp.account.userStatus ?? 'UNKNOWN' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-3">
+        <!-- Personal -->
+        <div class="col-12 col-lg-6">
+          <div class="section-card h-100">
+            <div class="section-card-header">
+              <i class="bi bi-person-vcard"></i>
+              <h6>Personal Details</h6>
+            </div>
+            <div class="section-card-body">
+              <div class="detail-row">
+                <span class="detail-label">Date Of Birth</span>
+                <span class="detail-value">{{ cp.profile.dateOfBirth ?? "—" }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Age</span>
+                <span class="detail-value">{{ cp.profile.age ?? "—" }} years old</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Gender</span>
+                <span class="detail-value">{{ cp.profile.gender ?? "—" }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">National ID</span>
+                <span class="detail-value">{{ cp.profile.nationalityNumber ?? "—" }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Passport Number</span>
+                <span class="detail-value">{{ cp.profile.passportNumber ?? "—" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact & Account -->
+        <div class="col-12 col-lg-6">
+          <div class="section-card h-100">
+            <div class="section-card-header">
+              <i class="bi bi-telephone"></i>
+              <h6>Contact &amp; Account</h6>
+            </div>
+            <div class="section-card-body">
+              <div class="detail-row">
+                <span class="detail-label">Phone</span>
+                <span class="detail-value">({{ cp.account.countryCode }}) {{ phoneFormatter(cp.account.phoneNumber) }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Email</span>
+                <span class="detail-value">{{ cp.profile.email ?? "—" }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">User Type</span>
+                <span class="detail-value">{{ cp.account.userType }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Team</span>
+                <span class="detail-value">{{ cp.account.referralCode }}</span>
+              </div>
+              <div class="detail-row">
+                <span class="detail-label">Status</span>
+                <span class="detail-value">{{ cp.account.userStatus }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address -->
+        <div class="col-12">
+          <div class="section-card">
+            <div class="section-card-header">
+              <i class="bi bi-geo-alt"></i>
+              <h6>Address</h6>
+            </div>
+            <div class="section-card-body">
+              @for (addr of cp.address; track addr.addressId) {
+                <div class="mb-3 pb-3 border-bottom">
+                  <div class="detail row gap-1 d-flex flex-column flex-md-row">
+                    <span class="detail-label md-1">Line 1</span>
+                    <span class="detail-value text-start">{{ addr.line1 }}</span>
+                  </div>
+                  <div class="row g-3 mt-1">
+                    <div class="col-6 col-md-3">
+                      <div class="detail-label mb-1">Village</div>
+                      <div class="detail-value text-start">{{ getVillageName(addr.villageCode) ? getVillageName(addr.villageCode) : '—' }}</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="detail-label mb-1">Commune</div>
+                      <div class="detail-value text-start">{{ getCommuneName(addr.communeCode) ? getCommuneName(addr.communeCode) : '—' }}</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="detail-label mb-1">District</div>
+                      <div class="detail-value text-start">{{ getDistrictName(addr.districtCode) ? getDistrictName(addr.districtCode) : '—' }}</div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                      <div class="detail-label mb-1">Province</div>
+                      <div class="detail-value text-start">{{ getProvinceName(addr.provinceCode) ? getProvinceName(addr.provinceCode) : '—' }}</div>
+                    </div>
+                  </div>
+                </div>
+              } @empty {
+                <div class="text-muted">No address on file.</div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+
+    } @else {
+      <div class="alert alert-warning">No user data.</div>
+    }
+  }
+}
